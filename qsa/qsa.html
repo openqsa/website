@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <link href="../css/style.css" rel="stylesheet" />
+        <script src="../js/MathJax-master/MathJax.js?config=TeX-AMS_HTML-full" async></script>
+</head>
+
+<body>
+        <div class="header">
+                <img src="../logo_openqsa.png" />
+                <span class="home" onclick="window.location='../index.html'">&#x23CE;</span>
+        </div>
+        <div class="inner">
+                <h1>Summary</h1>
+                <ul>
+                        <li><a href="#introduction">Introduction</a></li>
+                        <li><a href="#nonlinear_systems">Nonlinear Systems</a></li>
+                        <li><a href="#linear_and_quadratic_functions">Linear and Quadratic Functions</a></li>
+                </ul>
+                <a name="introduction">
+                        <h1>Introduction</h1>
+                </a>
+                <p>Quadratic Sinusoidal Analysis, or QSA, is a mathematical theory developped by Christophe Magnani and
+                        Lee E. Moore to elucidate the fundamental linear and nonlinear properties of excitable
+                        membranes in the frequency domain, not only as a contrast and adjunct to real time methods, but
+                        also a quantitative and unique approach to measure neuronal properties.</p>
+                <p>Frequency domain methods can be used to quantitatively compare real neurons with their models. This
+                        approach shows that the nonlinear behavior can also be accurately measured with frequency
+                        domain methods, which can provide distinct advantages over real time methods.</p>
+                <p>Linear analysis with random broad band stimuli is also time consuming, however significant reduction
+                        of experimental time is possible if the same pseudo random stimulus containing a limited number
+                        of frequencies is applied to the preparation.</p>
+                <p>Fixed multisinusoidal stimuli can be effectively used for nonlinear analysis if stimuli are created
+                        with frequencies that elicit higher second order responses that do not overlap both the first
+                        and second order responses. Analysis of these quadratic responses with QSA provides a compact
+                        and unique description of neuronal properties independent of a particular computational model.</p>
+                <p>In summary, neurons clearly have linear and nonlinear responses to input stimuli. The linear
+                        responses are not just mirror images of the stimulus clearly being able to enhance certain
+                        frequencies due to the linear resonant behavior. On the other hand, nonlinear responses are
+                        considerably more complex as have been shown by the appearance of a multitude of new
+                        interactive frequencies in the neuronal response that are not present in the input signal.
+                        Furthermore, the fluctuations present in neurons due to inherent mechanisms and ongoing
+                        synaptic activity can modify the nature of the nonlinear responses.</p>
+                <a name="nonlinear_systems">
+                        <h1>Nonlinear Systems</h1>
+                </a>
+                <p>For a linear system, the linear superposition principle implies that the response to a linear
+                        superposition of sine waves is a linear superposition of sine waves with the same frequencies
+                        but different amplitudes and phases. The linear superposition principle does not hold anymore
+                        for nonlinear systems, which can have frequencies not present in the stimulation.</p>
+                <p>More precisely, if a multisinusoidal stimulation has frequencies \(\omega_i\) and \(\omega_j\) then
+                        the linear response will have frequencies \(\omega_i\) and \(\omega_j\) whereas the quadratic
+                        response will have additional frequency interactions \(\left|\omega_i \pm \omega_j\right|\).</p>
+                <p>We distinguish several classes of frequencies in the response to a multisinusoidal stimulation with
+                        fundamentals \(\{\omega_k\}\):</p>
+                <ul>
+                        <li><b>Linear</b> : \(\omega_k\)</li>
+                        <li><b>Diagonal</b> (or <b>harmonics</b>) : \(2 \omega_k\)</li>
+                        <li><b>Plus</b> : \(\omega_i + \omega_j\) for \(i \neq j\)</li>
+                        <li><b>Minus</b>: \(\left|\omega_i - \omega_j\right|\) for \(i \neq j\)</li>
+                        <li><b>Quadratic</b> : diagonal, plus, minus</li>
+                </ul>
+                <p>In practice, multisinusoidal stimulations must have sufficiently small amplitudes to elicit linear
+                        and quadratic responses while these amplitudes must also be large enough to overcome the
+                        background noise.</p>
+                <p>Arbitrary multisinusoidal stimulations can generate frequency overlaps that make the responses
+                        ambiguous in the frequency domain. Indeed, two input frequencies can sometimes generate the
+                        same output frequency. For example, the input frequency set</p>
+                \[\{1, 2, 3, 4\} \textrm{in hertz}\]
+                <p>generates at least that ambiguity between two minus combinations</p>
+                \[3 - 1 = 4 - 2\]
+                <p>Hence, measuring the response at 2 hertz is not sufficient to distinguish the precise contribution
+                        of each input pairs \(3 - 1\) and \(4 - 2\) in this response.</p>
+                <p>In order to be able to make precise deterministic measurements, the QSA protocol requires to use
+                        fundamental frequencies without overlap up to the second order. The <a href="../rtxi/rtxi.html"
+                                target="_blank">RTXI module <b>qsa_stimulation</b></a> implements an algorithm to
+                        generate such a set of nonoverlapping frequencies.</p>
+                <a name="linear_and_quadratic_functions">
+                        <h1>Linear and Quadratic Functions</h1>
+                </a>
+                <p>We illustrate QSA analysis for a current clamp experiment</p>
+                \[V(t) = F\left[I(t)\right]\]
+                <p>where \(I(t)\) is a multisinusoidal current stimulation with nonoverlapping frequencies
+                        \(\{\omega_k\}\) and \(V(t)\) is the measured membrane potential. Clearly, other experimental
+                        protocols can be used (e.g. voltage clamp). The aim is to determine the linear and quadratic
+                        behavior of the neuronal function \(F\) in the frequency domain.</p>
+                <p>The Fourier theory decomposes signals as linear combinations of complex exponentials including both
+                        positive and negative frequencies. The minimal example is given by the cosine function:</p>
+                \[\cos(\omega t) = \frac{1}{2} e^{i \omega t} + \frac{1}{2} e^{- i \omega t}\]
+                <p>By convention, the fundamental frequencies \(\{\omega_k\}\) are extended to their negative mirror:</p>
+                \[\omega_{-k} = - \omega_k\]
+                <p>In linear analysis, the Fourier transform applied to \(I(t)\) and \(V(t)\) allows to compute the
+                        linear transfer function, or impedance:</p>
+                \[Z[\omega_k] = \frac{V[\omega_k]}{I[\omega_k]}\]
+                <p>In quadratic analysis, the QSA theory allows to compute the quadratic transfer function</p>
+                \[B[\omega_i,\omega_j] = \gamma_{i,j} \frac{V[\omega_i + \omega_j]}{I[\omega_i] I[\omega_j]}\]
+                <p>where</p>
+                \[\gamma_{i,i} = 1 \textrm{ and } \gamma_{i,j} = \frac{1}{2} \textrm{ for } i \neq j\]
+                <p>Since \(\omega_k\) can be either positive or negative, the combinations \(\omega_i + \omega_j\)
+                        include all sums and differences between \(\left|\omega_i\right|\) and
+                        \(\left|\omega_j\right|\). By convention, we set \(B[\omega_k,\omega_{-k}] = 0\) in order to
+                        study wave signals without DC.</p>
+                <p>The cornerstone of QSA theory is that the QSA matrix</p>
+                \[Q_{i,j} = B[- \omega_i,\omega_j]\]
+                <p>is a Hermitian matrix. Thus, although this matrix has complex coefficients, its eigenvalues are real
+                        numbers, which can be physically interpreted as amplitudes in \(mV / nA^2\).</p>
+                <p>This formulation provides an algebraic description of the quadratic part of the membrane potential
+                        as</p>
+                \[V_2(t) = I_t^* Q I_t\]
+                <p>where \(Q\) is the QSA matrix and \(I_t\) is a time dependent vector encoding the multisinusoidal
+                        stimulation.</p>
+                <p>The quadratic response can then be expressed as a sum of squares</p>
+                \[V_2(t) = \sum_k \lambda_k \left|w_k\right|^2\]
+                <p>where \(\lambda_k\) are eigenvalues of \(Q\) and \(w_k\) are stimulation components.</p>
+                <p>Hence, the quadratic transfer function can be interpreted as a set of quadratic filters with
+                        amplitudes given by the eigenvalues \(\lambda_k\).</p>
+        </div>
+</body>
+
+</html>

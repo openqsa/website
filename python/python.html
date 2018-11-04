@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <link href="../css/style.css" rel="stylesheet" />
+        <link href="../css/prism.css" rel="stylesheet" />
+</head>
+
+<body>
+        <script src="../js/prism.js"></script>
+        <div class="header">
+                <img src="../logo_openqsa.png" />
+                <span class="home" onclick="window.location='../index.html'">&#x23CE;</span>
+        </div>
+        <div class="inner">
+                <h1>Summary</h1>
+                <ul>
+                        <li><a href="#installation">Installation</a></li>
+                        <li><a href="#quick_tutorial">Quick Tutorial</a></li>
+                        <li><a href="#jupyter_notebook">Jupyter Notebook</a></li>
+                </ul>
+                <a name="installation">
+                        <h1>Installation</h1>
+                </a>
+                <h2>Python</h2>
+                <p>It is recommended to install <b>Python 3.7</b> with <b>pip3</b> on the computer.</p>
+                <h2>Environment</h2>
+                <p>It is a good practice to work in isolation inside a <code>python3</code> virtual environment:</p>
+                <pre><code class="language-bash">python3 -m venv venv
+source venv/bin/activate</code></pre>
+                <h2>Package QSA</h2>
+                <p>The package <code>qsa</code> provides QSA analysis of signals, including JSON files exported from
+                        RTXI
+                        modules <b>qsa_stimulation</b> and <b>qsa_response</b>. It can be installed using <code>pip3</code>:</p>
+                <pre><code class="language-bash">pip3 install qsa</code></pre>
+                <p>Dependent packages such as <code>numpy</code> and <code>matplotlib</code> should be automatically
+                        installed.</p>
+                <h2>Package Jupyter</h2>
+                <p>The package <code>jupyter</code> provides notebooks (cf. <a href="http://jupyter.org/" target="_blank">jupyter.org</a>)
+                        to facilitate data analysis and visualization. It can be installed using <code>pip3</code>:</p>
+                <pre><code class="language-bash">pip3 install jupyter</code></pre>
+                <a name="quick_tutorial">
+                        <h1>Quick Tutorial</h1>
+                </a>
+                <p>This tutorial shows how to analyze an RTXI experiment using <code>python3</code> interpreter. First,
+                        it is
+                        necessary to import the package <code>qsa</code></p>
+                <pre><code class="language-python">>>> import qsa</code></pre>
+                <h2>Load RTXI experiment</h2>
+                <p>The RTXI module <b>qsa_response</b> exports data to JSON files that can be read with Python.</p>
+                <p>We illustrate the procedure on the JSON file <a href="examples/sample_rtxi.json" download="sample_rtxi.json">sample_rtxi.json</a>
+                        that was recorded on a Hodgkin-Huxley model.</p>
+                <pre><code class="language-python">>>> e = qsa.rtxi.Experiment('sample_rtxi.json')</code></pre>
+                <p>The result contained in the variable <code>e</code> represents an RTXI experiment as an array of
+                        measurements. Each measurement corresponds to the multisinusoidal part of a single trace, the
+                        number of
+                        traces being specified during the experiment in the RTXI module <b>qsa_stimulation</b>.</p>
+                <p>We check the number of measurements:</p>
+                <pre><code class="language-python">>>> e.count()
+4</code></pre>
+                <p>It is then possible to get a measurement at a specified index:</p>
+                <pre><code class="language-python">>>> m = e.get_measurement(0)</code></pre>
+                <p>or to average several measurements given a list of indices, the result is still a measurement:</p>
+                <pre><code class="language-python">>>> m = e.average([0,1,2,3])</code></pre>
+                <h2>QSA Analysis</h2>
+                <p>The quadratic sinusoidal analysis of a measurement is constructed as an object:</p>
+                <pre><code class="language-python">>>> a = qsa.analysis.Analysis(m)</code></pre>
+                <p>All computations are done automatically and become available as soon as the analysis has been
+                        created.</p>
+                <p>For example, the linear transfer function is given by</p>
+                <pre><code class="language-python">>>> a.linear
+array([1829.2884483   +10.63159916j, 1838.23978067  +20.01321179j,
+        1863.86101728  +31.55688678j, 2136.01715592 -117.14561866j,
+        2185.25028265 -194.20445702j, 2208.77698464 -245.55706613j,
+        2251.06173467 -394.66446218j, 2252.11802882 -609.80204606j,
+        2166.54066271 -875.29384477j, 1455.36248296-1364.71568196j,
+        1220.6203661 -1373.41104336j, 1104.839442  -1358.4758122j ,
+        1026.35388058-1342.07808313j,  909.32235369-1302.78013391j,
+        902.56651136-1303.50788013j,  793.49102668-1255.22028481j])</code></pre>
+                <p>Similarly, the eigenvalues of the QSA matrix are given by</p>
+                <pre><code class="language-python">>>> a.eigen
+array([-3.63693577e+09, -1.74043293e+08, -1.56065168e+08, -1.16134436e+08,
+        -1.04166609e+08, -9.24392627e+07, -8.24809727e+07, -7.26682320e+07,
+        -6.61480154e+07, -6.11734428e+07, -4.77181840e+07, -4.62928536e+07,
+        -3.51827827e+07, -2.94613835e+07,  4.82172343e+06,  2.15923335e+07,
+        4.31292141e+07,  5.42112014e+07,  7.14435605e+07,  9.77941074e+07,
+        9.89383669e+07,  1.09815693e+08,  1.27007425e+08,  1.55668432e+08,
+        1.75270167e+08,  2.01746005e+08,  2.16067839e+08,  2.44813285e+08,
+        2.63213156e+08,  2.83859596e+08,  5.03610375e+08,  2.04790793e+09])</code></pre>
+                <h2>Graphics</h2>
+                <p>Data visualization is directly implemented using the Python package <code>matplotlib</code>.
+                        Explicit use of this package is not required since transparent functions are provided.</p>
+                <p>With the Python command line interpreter, it is first necessary to enable interactive graphics:</p>
+                <pre><code class="language-python">>>> qsa.graphics.ion()</code></pre>
+                <p>Then, for example, the linear transfer function can be plot as follows:</p>
+                <pre><code class="language-python">>>> qsa.graphics.plot_transfer(a)</code></pre>
+                <img src="transfer.png" width="400px" />
+                <p>Similarly, the QSA matrix can be plot as follows:</p>
+                <pre><code class="language-python">>>> qsa.graphics.plot_qmatrix(a)</code></pre>
+                <img src="qmatrix.png" width="400px" />
+                <p>It is also possible to create a figure with 2 subplots, specifying option <code>new_figure=False</code>
+                        to
+                        prevent creation of a new figure for each individual plot:</p>
+                <pre><code class="language-python">>>> qsa.graphics.figure()
+>>> qsa.graphics.subplot(1, 2, 1)
+>>> qsa.graphics.plot_transfer(a, new_figure=False)
+>>> qsa.graphics.subplot(1, 2, 2)
+>>> qsa.graphics.plot_qmatrix(a, new_figure=False)</code></pre>
+                <img src="transfer and qmatrix.png" width="400px" />
+                <a name="jupyter_notebook">
+                        <h1>Jupyter Notebook</h1>
+                </a>
+                <p>The Jupyter notebook is similar to a Mathematica notebook, which provides an efficient way to make
+                        interactive computations including visualization.</p>
+                <p>It can be started from the shell command line:</p>
+                <pre><code class="language-bash">jupyter notebook</code></pre>
+                <p>The <code>qsa</code> library can be used with the Python command line interpreter as well as with
+                        Jupyter
+                        notebooks.</p>
+                <p>To enable graphics, do not use <code>qsa.graphics.ion()</code> but rather</p>
+                <pre><code class="language-python">%matplotlib notebook</code></pre>
+                <p>at the beginning of the notebook.</p>
+                <p>An example of Jupyter notebook for QSA can be downloaded as <a href="examples/sample_notebook.ipynb"
+                                download="sample_notebook.ipynb">sample_notebook.ipynb</a></p>
+                <img src="notebook.png" width="600px" />
+        </div>
+</body>
+
+</html>

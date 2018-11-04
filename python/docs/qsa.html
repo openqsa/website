@@ -1,0 +1,1359 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>qsa package &#8212; QSA  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="qsa-package">
+<h1>qsa package<a class="headerlink" href="#qsa-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-qsa.analysis">
+<span id="qsa-analysis-module"></span><h2>qsa.analysis module<a class="headerlink" href="#module-qsa.analysis" title="Permalink to this headline">¶</a></h2>
+<p>This module computes linear and quadratic analyses of measurements.</p>
+<dl class="class">
+<dt id="qsa.analysis.Analysis">
+<em class="property">class </em><code class="descclassname">qsa.analysis.</code><code class="descname">Analysis</code><span class="sig-paren">(</span><em>measurement</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/analysis.html#Analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.analysis.Analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Computation of linear and quadratic analysis of a measurement.</p>
+<p>Constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>measurement</strong> (<a class="reference internal" href="#qsa.measurement.Measurement" title="qsa.measurement.Measurement"><em>qsa.measurement.Measurement</em></a>) – the measurement to be analyzed</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.dt">
+<code class="descname">dt</code><a class="headerlink" href="#qsa.analysis.Analysis.dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get sampling time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dt (seconds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.duration">
+<code class="descname">duration</code><a class="headerlink" href="#qsa.analysis.Analysis.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get experiment duration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">duration (seconds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.eigen">
+<code class="descname">eigen</code><a class="headerlink" href="#qsa.analysis.Analysis.eigen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get eigenvalues of the QSA matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the eigenvalues</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.ficks1">
+<code class="descname">ficks1</code><a class="headerlink" href="#qsa.analysis.Analysis.ficks1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FFT indices of frequencies1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of FFT indices of frequencies1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.ficks12">
+<code class="descname">ficks12</code><a class="headerlink" href="#qsa.analysis.Analysis.ficks12" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FFT indices of frequencies12.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of FFT indices of frequencies12</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.ficks2">
+<code class="descname">ficks2</code><a class="headerlink" href="#qsa.analysis.Analysis.ficks2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FFT indices of frequencies2.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of FFT indices of frequencies2</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.ficks2d">
+<code class="descname">ficks2d</code><a class="headerlink" href="#qsa.analysis.Analysis.ficks2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FFT indices of frequencies2d.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of FFT indices of frequencies2d</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.ficks2m">
+<code class="descname">ficks2m</code><a class="headerlink" href="#qsa.analysis.Analysis.ficks2m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FFT indices of frequencies2m.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of FFT indices of frequencies2m</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.ficks2p">
+<code class="descname">ficks2p</code><a class="headerlink" href="#qsa.analysis.Analysis.ficks2p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FFT indices of frequencies2p.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of FFT indices of frequencies2p</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.frequencies">
+<code class="descname">frequencies</code><a class="headerlink" href="#qsa.analysis.Analysis.frequencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get fundamental frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of fundamental frequencies (hertz)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.frequencies1">
+<code class="descname">frequencies1</code><a class="headerlink" href="#qsa.analysis.Analysis.frequencies1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get positive linear frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of positive linear frequencies (hertz)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.frequencies12">
+<code class="descname">frequencies12</code><a class="headerlink" href="#qsa.analysis.Analysis.frequencies12" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get positive linear + quadratic frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of positive linear + quadratic frequencies (hertz)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.frequencies2">
+<code class="descname">frequencies2</code><a class="headerlink" href="#qsa.analysis.Analysis.frequencies2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get positive quadratic frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of positive quadratic frequencies (hertz)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.frequencies2d">
+<code class="descname">frequencies2d</code><a class="headerlink" href="#qsa.analysis.Analysis.frequencies2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get positive diagonal frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of positive diagonal frequencies (hertz)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.frequencies2m">
+<code class="descname">frequencies2m</code><a class="headerlink" href="#qsa.analysis.Analysis.frequencies2m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get positive minus frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of positive minus frequencies (hertz)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.frequencies2p">
+<code class="descname">frequencies2p</code><a class="headerlink" href="#qsa.analysis.Analysis.frequencies2p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get positive plus frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of positive plus frequencies (hertz)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.linear">
+<code class="descname">linear</code><a class="headerlink" href="#qsa.analysis.Analysis.linear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get linear transfer function over ficks1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the transfer function over ficks1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.quadratic">
+<code class="descname">quadratic</code><a class="headerlink" href="#qsa.analysis.Analysis.quadratic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get quadratic transfer function, which is the QSA matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the  quadratic transfer function</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.t">
+<code class="descname">t</code><a class="headerlink" href="#qsa.analysis.Analysis.t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the time vector (seconds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.x">
+<code class="descname">x</code><a class="headerlink" href="#qsa.analysis.Analysis.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get stimulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the stimulation vector</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.x1">
+<code class="descname">x1</code><a class="headerlink" href="#qsa.analysis.Analysis.x1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get linear approximation of stimulation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the linear approximation of stimulation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.x_dc">
+<code class="descname">x_dc</code><a class="headerlink" href="#qsa.analysis.Analysis.x_dc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get stimulation DC.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">stimulation DC</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.x_sp">
+<code class="descname">x_sp</code><a class="headerlink" href="#qsa.analysis.Analysis.x_sp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get stimulation spectrum.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the stimulation spectrum vector</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.x_sp1">
+<code class="descname">x_sp1</code><a class="headerlink" href="#qsa.analysis.Analysis.x_sp1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get stimulation spectrum over ficks1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the stimulation spectrum over ficks1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y">
+<code class="descname">y</code><a class="headerlink" href="#qsa.analysis.Analysis.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the response vector</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y1">
+<code class="descname">y1</code><a class="headerlink" href="#qsa.analysis.Analysis.y1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dc + linear approximation of response</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the dc + linear approximation of response</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y12">
+<code class="descname">y12</code><a class="headerlink" href="#qsa.analysis.Analysis.y12" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dc + linear + quadratic approximation of response</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the dc + linear + quadratic approximation of response</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y2">
+<code class="descname">y2</code><a class="headerlink" href="#qsa.analysis.Analysis.y2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dc + quadratic approximation of response</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the dc + quadratic approximation of response</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y_dc">
+<code class="descname">y_dc</code><a class="headerlink" href="#qsa.analysis.Analysis.y_dc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response DC.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">response DC</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y_sp">
+<code class="descname">y_sp</code><a class="headerlink" href="#qsa.analysis.Analysis.y_sp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response spectrum.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the response spectrum vector</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y_sp1">
+<code class="descname">y_sp1</code><a class="headerlink" href="#qsa.analysis.Analysis.y_sp1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response spectrum over ficks1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the response spectrum over ficks1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y_sp12">
+<code class="descname">y_sp12</code><a class="headerlink" href="#qsa.analysis.Analysis.y_sp12" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response spectrum over ficks12.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the response spectrum over ficks12</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y_sp2">
+<code class="descname">y_sp2</code><a class="headerlink" href="#qsa.analysis.Analysis.y_sp2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response spectrum over ficks2.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the response spectrum over ficks2</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y_sp2d">
+<code class="descname">y_sp2d</code><a class="headerlink" href="#qsa.analysis.Analysis.y_sp2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response spectrum over ficks2d.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the response spectrum over ficks2d</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y_sp2m">
+<code class="descname">y_sp2m</code><a class="headerlink" href="#qsa.analysis.Analysis.y_sp2m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response spectrum over ficks2m.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the response spectrum over ficks2m</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.analysis.Analysis.y_sp2p">
+<code class="descname">y_sp2p</code><a class="headerlink" href="#qsa.analysis.Analysis.y_sp2p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response spectrum over ficks2p.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the response spectrum over ficks2p</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.analysis.spectralize">
+<code class="descclassname">qsa.analysis.</code><code class="descname">spectralize</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/analysis.html#spectralize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.analysis.spectralize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute discrete Fourier transform of a real signal.
+The FFT is normalized by the length of the signal. In particular,
+<span class="math notranslate nohighlight">\(cos(t)\)</span> is transformed to a sum of two complex exponentials with half
+amplitude</p>
+<div class="math notranslate nohighlight">
+\[cos(t) = \frac{1}{2} e^{i t} + \frac{1}{2} e^{- i t}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>z</strong> (<em>numpy.ndarray</em>) – signal as a time series of real values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array of Fourier coefficients (complex numbers)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z_sp</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">spectralize</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z_sp</span><span class="p">))</span>
+<span class="go">0.5000241787423103</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.analysis.unspectralize">
+<code class="descclassname">qsa.analysis.</code><code class="descname">unspectralize</code><span class="sig-paren">(</span><em>z_sp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/analysis.html#unspectralize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.analysis.unspectralize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute inverse of a Fourier transform obtained with <a class="reference internal" href="#qsa.analysis.spectralize" title="qsa.analysis.spectralize"><code class="xref py py-func docutils literal notranslate"><span class="pre">spectralize()</span></code></a>.
+By definition, unspectralize(spectralize(z)) equals z.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>z_sp</strong> (<em>numpy.ndarray</em>) – a Fourier transform obtained with <a class="reference internal" href="#qsa.analysis.spectralize" title="qsa.analysis.spectralize"><code class="xref py py-func docutils literal notranslate"><span class="pre">spectralize()</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a real signal for which Fourier transform is z_sp</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z_sp</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">spectralize</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z_sp_inv</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">unspectralize</span><span class="p">(</span><span class="n">z_sp</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="n">z_sp_inv</span><span class="p">)</span>
+<span class="go">7.771561172376096e-16</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-qsa.domain">
+<span id="qsa-domain-module"></span><h2>qsa.domain module<a class="headerlink" href="#module-qsa.domain" title="Permalink to this headline">¶</a></h2>
+<p>This module provides frequency arithmetic for linear and quadratic responses.</p>
+<dl class="class">
+<dt id="qsa.domain.Subset">
+<em class="property">class </em><code class="descclassname">qsa.domain.</code><code class="descname">Subset</code><a class="reference internal" href="_modules/qsa/domain.html#Subset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.domain.Subset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Description of the subsets of interactive frequencies.</p>
+<dl class="attribute">
+<dt id="qsa.domain.Subset.ALL">
+<code class="descname">ALL</code><em class="property"> = 65535</em><a class="headerlink" href="#qsa.domain.Subset.ALL" title="Permalink to this definition">¶</a></dt>
+<dd><p>All frequencies, equivalent to LINEAR, QUADRATIC</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.domain.Subset.DIAGONAL">
+<code class="descname">DIAGONAL</code><em class="property"> = 240</em><a class="headerlink" href="#qsa.domain.Subset.DIAGONAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Diagonal (harmonic) frequencies <span class="math notranslate nohighlight">\(2 f_i\)</span></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.domain.Subset.LINEAR">
+<code class="descname">LINEAR</code><em class="property"> = 15</em><a class="headerlink" href="#qsa.domain.Subset.LINEAR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linear frequencies <span class="math notranslate nohighlight">\(f_i\)</span></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.domain.Subset.MINUS">
+<code class="descname">MINUS</code><em class="property"> = 61440</em><a class="headerlink" href="#qsa.domain.Subset.MINUS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Difference frequencies <span class="math notranslate nohighlight">\(|f_i - f_j|\)</span></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.domain.Subset.PLUS">
+<code class="descname">PLUS</code><em class="property"> = 3840</em><a class="headerlink" href="#qsa.domain.Subset.PLUS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sum frequencies <span class="math notranslate nohighlight">\(f_i + f_j\)</span></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.domain.Subset.QUADRATIC">
+<code class="descname">QUADRATIC</code><em class="property"> = 65520</em><a class="headerlink" href="#qsa.domain.Subset.QUADRATIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quadratic frequencies, equivalent to DIAGONAL, PLUS, MINUS</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.domain.hertz2fick">
+<code class="descclassname">qsa.domain.</code><code class="descname">hertz2fick</code><span class="sig-paren">(</span><em>dt</em>, <em>duration</em>, <em>frequency</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/domain.html#hertz2fick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.domain.hertz2fick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a frequency given in hertz to the corresponding FFT index.
+Note that negative frequencies are converted to the right of positive frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dt</strong> (<em>float</em>) – sampling time (seconds)</li>
+<li><strong>duration</strong> (<em>float</em>) – experiment duration (seconds) such that <span class="math notranslate nohighlight">\(1 / duration\)</span> represents the minimal frequency</li>
+<li><strong>frequency</strong> (<em>float</em>) – frequency (hertz) to convert</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">index of the frequency in the FFT</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2fick</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2fick</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">9990</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.domain.hertz2ficks">
+<code class="descclassname">qsa.domain.</code><code class="descname">hertz2ficks</code><span class="sig-paren">(</span><em>dt</em>, <em>duration</em>, <em>frequencies</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/domain.html#hertz2ficks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.domain.hertz2ficks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an array of frequencies in hertz to the corresponding array of FFT indices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dt</strong> (<em>float</em>) – sampling time (seconds)</li>
+<li><strong>duration</strong> (<em>float</em>) – experiment duration (seconds) such that <span class="math notranslate nohighlight">\(1 / duration\)</span> represents the minimal frequency</li>
+<li><strong>frequencies</strong> (<em>numpy.ndarray</em>) – array of frequencies (hertz) to convert</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">indices of the frequencies in the FFT</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2ficks</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">10</span><span class="p">]))</span>
+<span class="go">[9900, 9990, 10, 100]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.domain.order">
+<code class="descclassname">qsa.domain.</code><code class="descname">order</code><span class="sig-paren">(</span><em>frequencies</em>, <em>symmetric=True</em>, <em>subset=&lt;Subset.ALL: 65535&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/domain.html#order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.domain.order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute first and second order interactive frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>frequencies</strong> (<em>numpy.ndarray</em>) – array of fundamental frequencies (hertz) ; they must be strictly positive</li>
+<li><strong>symmetric</strong> (<em>bool</em>) – True to generate both negative and positive frequencies ; False to generate positive frequencies only</li>
+<li><strong>subset</strong> (<em>enumerate</em>) – specify the frequency combinations (see also <a class="reference internal" href="#qsa.domain.Subset" title="qsa.domain.Subset"><code class="xref py py-class docutils literal notranslate"><span class="pre">qsa.domain.Subset</span></code></a>)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">interactive frequencies (hertz) generated from fundamental frequencies</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">]),</span> <span class="bp">True</span><span class="p">,</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">QUADRATIC</span><span class="p">)</span>
+<span class="go">array([-14.,  -9.,  -5.,  -4.,   4.,   5.,   9.,  14.])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-qsa.graphics">
+<span id="qsa-graphics-module"></span><h2>qsa.graphics module<a class="headerlink" href="#module-qsa.graphics" title="Permalink to this headline">¶</a></h2>
+<p>This modules provides graphical tools to display analysis results.
+All functions are based on the matplotlib plotting library.</p>
+<dl class="function">
+<dt id="qsa.graphics.figure">
+<code class="descclassname">qsa.graphics.</code><code class="descname">figure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new figure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">result of <code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.figure()</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.graphics.ion">
+<code class="descclassname">qsa.graphics.</code><code class="descname">ion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#ion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.ion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn the interactive mode on.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">result of <code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.ion()</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.graphics.plot_comparison">
+<code class="descclassname">qsa.graphics.</code><code class="descname">plot_comparison</code><span class="sig-paren">(</span><em>a</em>, <em>legend=True</em>, <em>new_figure=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#plot_comparison"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.plot_comparison" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the comparison between response, linear and linear + quadratic analyses in the time domain.
+The graphic is embedded in the current figure, or a new figure can be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> (<a class="reference internal" href="#qsa.analysis.Analysis" title="qsa.analysis.Analysis"><em>qsa.analysis.Analysis</em></a>) – QSA analysis</li>
+<li><strong>legend</strong> (<em>bool</em>) – True (default) if legend should be displayed</li>
+<li><strong>new_figure</strong> (<em>bool</em>) – True (default) if a new figure should be created</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.graphics.plot_flat">
+<code class="descclassname">qsa.graphics.</code><code class="descname">plot_flat</code><span class="sig-paren">(</span><em>a</em>, <em>subset=&lt;Subset.ALL: 65535&gt;</em>, <em>legend=True</em>, <em>new_figure=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#plot_flat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.plot_flat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the response in the frequency domain.
+The function represented is <span class="math notranslate nohighlight">\(\left|Y(\Omega_k)\right|\)</span>
+where <span class="math notranslate nohighlight">\(\Omega_k\)</span> is a subset of positive interactive frequencies.
+The graphic is embedded in the current figure, or a new figure can be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> (<a class="reference internal" href="#qsa.analysis.Analysis" title="qsa.analysis.Analysis"><em>qsa.analysis.Analysis</em></a>) – QSA analysis</li>
+<li><strong>subset</strong> (<a class="reference internal" href="#qsa.domain.Subset" title="qsa.domain.Subset"><em>qsa.domain.Subset</em></a>) – subset of interactive frequencies</li>
+<li><strong>legend</strong> (<em>bool</em>) – True (default) if legend should be displayed</li>
+<li><strong>new_figure</strong> (<em>bool</em>) – True (default) if a new figure should be created</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.graphics.plot_pure">
+<code class="descclassname">qsa.graphics.</code><code class="descname">plot_pure</code><span class="sig-paren">(</span><em>a</em>, <em>new_figure=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#plot_pure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.plot_pure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the pure quadratic analysis in the time domain.
+The pure quadratic analysis has no dc and no linear component.
+The graphic is embedded in the current figure, or a new figure can be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> (<a class="reference internal" href="#qsa.analysis.Analysis" title="qsa.analysis.Analysis"><em>qsa.analysis.Analysis</em></a>) – QSA analysis</li>
+<li><strong>new_figure</strong> (<em>bool</em>) – True (default) if a new figure should be created</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.graphics.plot_qeigen">
+<code class="descclassname">qsa.graphics.</code><code class="descname">plot_qeigen</code><span class="sig-paren">(</span><em>a</em>, <em>new_figure=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#plot_qeigen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.plot_qeigen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the eigenvalues of the QSA matrix.
+These are sorted by magnitude. Note that eigenvalues are real since the QSA matrix is Hermitian.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> (<a class="reference internal" href="#qsa.analysis.Analysis" title="qsa.analysis.Analysis"><em>qsa.analysis.Analysis</em></a>) – QSA analysis</li>
+<li><strong>new_figure</strong> (<em>bool</em>) – True (default) if a new figure should be created</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.graphics.plot_qmatrix">
+<code class="descclassname">qsa.graphics.</code><code class="descname">plot_qmatrix</code><span class="sig-paren">(</span><em>a</em>, <em>new_figure=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#plot_qmatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.plot_qmatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the quadratic transfer function in the frequency domain.
+The function represented is <span class="math notranslate nohighlight">\(\left|Q_{i,j}\right|\)</span>
+where <span class="math notranslate nohighlight">\((Q_{i,j})\)</span> is the QSA matrix.
+The graphic is embedded in the current figure, or a new figure can be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> (<a class="reference internal" href="#qsa.analysis.Analysis" title="qsa.analysis.Analysis"><em>qsa.analysis.Analysis</em></a>) – QSA analysis</li>
+<li><strong>new_figure</strong> (<em>bool</em>) – True (default) if a new figure should be created</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.graphics.plot_response">
+<code class="descclassname">qsa.graphics.</code><code class="descname">plot_response</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#plot_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.plot_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the response in the time and frequency domain.
+A new figure with subplots is automatically created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>a</strong> (<a class="reference internal" href="#qsa.analysis.Analysis" title="qsa.analysis.Analysis"><em>qsa.analysis.Analysis</em></a>) – QSA analysis</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.graphics.plot_stimulation">
+<code class="descclassname">qsa.graphics.</code><code class="descname">plot_stimulation</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#plot_stimulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.plot_stimulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the stimulation in the time and frequency domain.
+A new figure with subplots is automatically created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>a</strong> (<a class="reference internal" href="#qsa.analysis.Analysis" title="qsa.analysis.Analysis"><em>qsa.analysis.Analysis</em></a>) – QSA analysis</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.graphics.plot_transfer">
+<code class="descclassname">qsa.graphics.</code><code class="descname">plot_transfer</code><span class="sig-paren">(</span><em>a</em>, <em>new_figure=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#plot_transfer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.plot_transfer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the linear transfer function in the frequency domain.
+The function represented is <span class="math notranslate nohighlight">\(\left|\frac{Y(\omega_k)}{X(\omega_k)}\right|\)</span>
+where <span class="math notranslate nohighlight">\(\omega_k\)</span> describe the finite set of positive linear frequencies.
+The graphic is embedded in the current figure, or a new figure can be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> (<a class="reference internal" href="#qsa.analysis.Analysis" title="qsa.analysis.Analysis"><em>qsa.analysis.Analysis</em></a>) – QSA analysis</li>
+<li><strong>new_figure</strong> (<em>bool</em>) – True (default) if a new figure should be created</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qsa.graphics.subplot">
+<code class="descclassname">qsa.graphics.</code><code class="descname">subplot</code><span class="sig-paren">(</span><em>nrows</em>, <em>ncols</em>, <em>index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/graphics.html#subplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.graphics.subplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a subplot to the current figure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nrows</strong> (<em>int</em>) – number of rows</li>
+<li><strong>ncols</strong> (<em>int</em>) – number of columns</li>
+<li><strong>index</strong> (<em>int</em>) – index of row and column ; starts at 1 in the upper left corner and increases to the right</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">result of <code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.subplot()</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-qsa.measurement">
+<span id="qsa-measurement-module"></span><h2>qsa.measurement module<a class="headerlink" href="#module-qsa.measurement" title="Permalink to this headline">¶</a></h2>
+<p>This module represents a single trace measurement in the stimulation-response paradigm.
+A measurement is applicable to both physical and virtual experiments.</p>
+<dl class="class">
+<dt id="qsa.measurement.Measurement">
+<em class="property">class </em><code class="descclassname">qsa.measurement.</code><code class="descname">Measurement</code><span class="sig-paren">(</span><em>dt</em>, <em>duration</em>, <em>frequencies</em>, <em>t</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/measurement.html#Measurement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.measurement.Measurement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implementation of a single trace measurement.</p>
+<p>Constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dt</strong> (<em>float</em>) – sampling time (seconds)</li>
+<li><strong>duration</strong> (<em>float</em>) – experiment duration (seconds) such that <span class="math notranslate nohighlight">\(1 / duration\)</span> represents the minimal frequency</li>
+<li><strong>frequencies</strong> (<em>numpy.ndarray</em>) – array of fundamental frequencies (hertz)</li>
+<li><strong>t</strong> (<em>numpy.ndarray</em>) – time vector (seconds)</li>
+<li><strong>x</strong> (<em>numpy.ndarray</em>) – stimulation vector</li>
+<li><strong>y</strong> (<em>numpy.ndarray</em>) – response vector</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValueError</strong> – if t,x,y have wrong size</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="qsa.measurement.Measurement.dt">
+<code class="descname">dt</code><a class="headerlink" href="#qsa.measurement.Measurement.dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get sampling time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dt (seconds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.measurement.Measurement.duration">
+<code class="descname">duration</code><a class="headerlink" href="#qsa.measurement.Measurement.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get experiment duration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">duration (seconds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.measurement.Measurement.frequencies">
+<code class="descname">frequencies</code><a class="headerlink" href="#qsa.measurement.Measurement.frequencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get fundamental frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the array of fundamental frequencies (hertz)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.measurement.Measurement.t">
+<code class="descname">t</code><a class="headerlink" href="#qsa.measurement.Measurement.t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the time vector (seconds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.measurement.Measurement.x">
+<code class="descname">x</code><a class="headerlink" href="#qsa.measurement.Measurement.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get stimulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the stimulation vector</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.measurement.Measurement.y">
+<code class="descname">y</code><a class="headerlink" href="#qsa.measurement.Measurement.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copy of the response vector</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-qsa.rtxi">
+<span id="qsa-rtxi-module"></span><h2>qsa.rtxi module<a class="headerlink" href="#module-qsa.rtxi" title="Permalink to this headline">¶</a></h2>
+<p>This module represents an RTXI experiment as an array of measurements (see also <a class="reference internal" href="#qsa.measurement.Measurement" title="qsa.measurement.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">qsa.measurement.Measurement</span></code></a>).</p>
+<dl class="class">
+<dt id="qsa.rtxi.Experiment">
+<em class="property">class </em><code class="descclassname">qsa.rtxi.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/rtxi.html#Experiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.rtxi.Experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representation of an RTXI experiment as an array of measurements.
+Each measurement corresponds to the multisinusoidal part of a single trace.</p>
+<p>Constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – Filename of the JSON file generated by the RTXI program.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="qsa.rtxi.Experiment.average">
+<code class="descname">average</code><span class="sig-paren">(</span><em>indices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/rtxi.html#Experiment.average"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.rtxi.Experiment.average" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute averaging of several measurements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>indices</strong> (<em>array</em>) – array of measurement indices to take into account in averaging</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">averaged measurement</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#qsa.measurement.Measurement" title="qsa.measurement.Measurement">qsa.measurement.Measurement</a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><strong>NotImplementedError</strong> – if trace_alternance &lt; 0</li>
+<li><strong>IndexError</strong> – if index is out of range</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="qsa.rtxi.Experiment.count">
+<code class="descname">count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/rtxi.html#Experiment.count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.rtxi.Experiment.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count measurements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">number of measurements</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="qsa.rtxi.Experiment.get_measurement">
+<code class="descname">get_measurement</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qsa/rtxi.html#Experiment.get_measurement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qsa.rtxi.Experiment.get_measurement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get measurement.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>int</em>) – index of measurement in array of measurements</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">measurement at the specified index</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#qsa.measurement.Measurement" title="qsa.measurement.Measurement">qsa.measurement.Measurement</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><strong>IndexError</strong> – if index is out of range</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qsa.rtxi.Experiment.version">
+<code class="descname">version</code><a class="headerlink" href="#qsa.rtxi.Experiment.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get version.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">version</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-qsa">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-qsa" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">QSA</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, OpenQSA.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/qsa.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

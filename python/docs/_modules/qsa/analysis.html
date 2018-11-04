@@ -1,0 +1,644 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>qsa.analysis &#8212; QSA  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for qsa.analysis</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module computes linear and quadratic analyses of measurements.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">qsa.domain</span>
+<span class="kn">import</span> <span class="nn">qsa.measurement</span>
+
+
+<div class="viewcode-block" id="Analysis"><a class="viewcode-back" href="../../qsa.html#qsa.analysis.Analysis">[docs]</a><span class="k">class</span> <span class="nc">Analysis</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computation of linear and quadratic analysis of a measurement.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurement</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor.</span>
+
+<span class="sd">        :param measurement: the measurement to be analyzed</span>
+<span class="sd">        :type measurement: qsa.measurement.Measurement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dt</span> <span class="o">=</span> <span class="n">measurement</span><span class="o">.</span><span class="n">dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__duration</span> <span class="o">=</span> <span class="n">measurement</span><span class="o">.</span><span class="n">duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">frequencies</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__t</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__x_sp</span> <span class="o">=</span> <span class="n">spectralize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span> <span class="o">=</span> <span class="n">spectralize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__x_dc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__x_sp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y_dc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies1</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">order</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies</span><span class="p">,</span>
+            <span class="n">symmetric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">subset</span><span class="o">=</span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">LINEAR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ficks1</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2ficks</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__duration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__x_sp1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__x_sp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__x1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__approximate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__x_sp</span><span class="p">,</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">LINEAR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__approximate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">,</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">LINEAR</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">order</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies</span><span class="p">,</span>
+            <span class="n">symmetric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">subset</span><span class="o">=</span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">QUADRATIC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ficks2</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2ficks</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__duration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__approximate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">,</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">QUADRATIC</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies12</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">order</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies</span><span class="p">,</span>
+            <span class="n">symmetric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">subset</span><span class="o">=</span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">ALL</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ficks12</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2ficks</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__duration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies12</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp12</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks12</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y12</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__approximate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">,</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">ALL</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2d</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">order</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies</span><span class="p">,</span>
+            <span class="n">symmetric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">subset</span><span class="o">=</span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">DIAGONAL</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ficks2d</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2ficks</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__duration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2d</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp2d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ficks2d</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2p</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">order</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies</span><span class="p">,</span>
+            <span class="n">symmetric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">subset</span><span class="o">=</span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">PLUS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ficks2p</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2ficks</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__duration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2p</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp2p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks2p</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2m</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">order</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies</span><span class="p">,</span>
+            <span class="n">symmetric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">subset</span><span class="o">=</span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">MINUS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ficks2m</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2ficks</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__duration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp2m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks2m</span><span class="p">]</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__linear</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__y_sp1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__x_sp1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__quadratic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__qmatrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eigen</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__quadratic</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get sampling time.</span>
+
+<span class="sd">        :return: dt (seconds)</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dt</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get experiment duration.</span>
+
+<span class="sd">        :return: duration (seconds)</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__duration</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get fundamental frequencies.</span>
+
+<span class="sd">        :return: copy of the array of fundamental frequencies (hertz)</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__frequencies</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get time.</span>
+
+<span class="sd">        :return: copy of the time vector (seconds)</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__t</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get stimulation.</span>
+
+<span class="sd">        :return: copy of the stimulation vector</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__x</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get response.</span>
+
+<span class="sd">        :return: copy of the response vector</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x_sp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get stimulation spectrum.</span>
+
+<span class="sd">        :return: copy of the stimulation spectrum vector</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__x_sp</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_sp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get response spectrum.</span>
+
+<span class="sd">        :return: copy of the response spectrum vector</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x_dc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get stimulation DC.</span>
+
+<span class="sd">        :return: stimulation DC</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__x_dc</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_dc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get response DC.</span>
+
+<span class="sd">        :return: response DC</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__y_dc</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">frequencies1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get positive linear frequencies.</span>
+
+<span class="sd">        :return: copy of the array of positive linear frequencies (hertz)</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__frequencies1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ficks1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get FFT indices of frequencies1.</span>
+
+<span class="sd">        :return: copy of the array of FFT indices of frequencies1</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x_sp1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get stimulation spectrum over ficks1.</span>
+
+<span class="sd">        :return: copy of the stimulation spectrum over ficks1</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__x_sp1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get linear approximation of stimulation</span>
+
+<span class="sd">        :return: copy of the linear approximation of stimulation</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__x1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_sp1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get response spectrum over ficks1.</span>
+
+<span class="sd">        :return: copy of the response spectrum over ficks1</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get dc + linear approximation of response</span>
+
+<span class="sd">        :return: copy of the dc + linear approximation of response</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">frequencies2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get positive quadratic frequencies.</span>
+
+<span class="sd">        :return: copy of the array of positive quadratic frequencies (hertz)</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ficks2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get FFT indices of frequencies2.</span>
+
+<span class="sd">        :return: copy of the array of FFT indices of frequencies2</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks2</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_sp2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get response spectrum over ficks2.</span>
+
+<span class="sd">        :return: copy of the response spectrum over ficks2</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp2</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get dc + quadratic approximation of response</span>
+
+<span class="sd">        :return: copy of the dc + quadratic approximation of response</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y2</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">frequencies12</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get positive linear + quadratic frequencies.</span>
+
+<span class="sd">        :return: copy of the array of positive linear + quadratic frequencies (hertz)</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__frequencies12</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ficks12</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get FFT indices of frequencies12.</span>
+
+<span class="sd">        :return: copy of the array of FFT indices of frequencies12</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks12</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_sp12</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get response spectrum over ficks12.</span>
+
+<span class="sd">        :return: copy of the response spectrum over ficks12</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp12</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y12</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get dc + linear + quadratic approximation of response</span>
+
+<span class="sd">        :return: copy of the dc + linear + quadratic approximation of response</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y12</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">frequencies2d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get positive diagonal frequencies.</span>
+
+<span class="sd">        :return: copy of the array of positive diagonal frequencies (hertz)</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2d</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ficks2d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get FFT indices of frequencies2d.</span>
+
+<span class="sd">        :return: copy of the array of FFT indices of frequencies2d</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks2d</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_sp2d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get response spectrum over ficks2d.</span>
+
+<span class="sd">        :return: copy of the response spectrum over ficks2d</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp2d</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">frequencies2p</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get positive plus frequencies.</span>
+
+<span class="sd">        :return: copy of the array of positive plus frequencies (hertz)</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2p</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ficks2p</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get FFT indices of frequencies2p.</span>
+
+<span class="sd">        :return: copy of the array of FFT indices of frequencies2p</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks2p</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_sp2p</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get response spectrum over ficks2p.</span>
+
+<span class="sd">        :return: copy of the response spectrum over ficks2p</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp2p</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">frequencies2m</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get positive minus frequencies.</span>
+
+<span class="sd">        :return: copy of the array of positive minus frequencies (hertz)</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__frequencies2m</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ficks2m</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get FFT indices of frequencies2m.</span>
+
+<span class="sd">        :return: copy of the array of FFT indices of frequencies2m</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ficks2m</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_sp2m</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get response spectrum over ficks2m.</span>
+
+<span class="sd">        :return: copy of the response spectrum over ficks2m</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_sp2m</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">linear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get linear transfer function over ficks1.</span>
+
+<span class="sd">        :return: copy of the transfer function over ficks1</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__linear</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">quadratic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get quadratic transfer function, which is the QSA matrix.</span>
+
+<span class="sd">        :return: copy of the  quadratic transfer function</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__quadratic</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">eigen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get eigenvalues of the QSA matrix.</span>
+
+<span class="sd">        :return: copy of the eigenvalues</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__eigen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__bcoefficient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span> <span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span> <span class="k">else</span> <span class="mf">0.5</span>
+        <span class="n">fi</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2fick</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">fj</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2fick</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="n">fij</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2fick</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="n">rij</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_sp</span><span class="p">[</span><span class="n">fij</span><span class="p">]</span>
+        <span class="n">si</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_sp</span><span class="p">[</span><span class="n">fi</span><span class="p">]</span>
+        <span class="n">sj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_sp</span><span class="p">[</span><span class="n">fj</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">k</span> <span class="o">*</span> <span class="n">rij</span> <span class="o">/</span> <span class="p">(</span><span class="n">si</span> <span class="o">*</span> <span class="n">sj</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__bmatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">order</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">,</span>
+            <span class="n">symmetric</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">subset</span><span class="o">=</span><span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">Subset</span><span class="o">.</span><span class="n">LINEAR</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">):</span>
+                <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bcoefficient</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">b</span>
+
+    <span class="k">def</span> <span class="nf">__qmatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bmatrix</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__approximate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z_sp</span><span class="p">,</span> <span class="n">subset</span><span class="p">):</span>
+        <span class="n">frequencies_generated</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">order</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">,</span>
+            <span class="n">symmetric</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">subset</span><span class="o">=</span><span class="n">subset</span><span class="p">)</span>
+        <span class="n">ficks</span> <span class="o">=</span> <span class="n">qsa</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">hertz2ficks</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span>
+            <span class="n">frequencies_generated</span><span class="p">)</span>
+        <span class="n">za_sp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">z_sp</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">)</span>
+        <span class="n">za_sp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_sp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">za_sp</span><span class="p">[</span><span class="n">ficks</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_sp</span><span class="p">[</span><span class="n">ficks</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">unspectralize</span><span class="p">(</span><span class="n">za_sp</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="spectralize"><a class="viewcode-back" href="../../qsa.html#qsa.analysis.spectralize">[docs]</a><span class="k">def</span> <span class="nf">spectralize</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute discrete Fourier transform of a real signal.</span>
+<span class="sd">    The FFT is normalized by the length of the signal. In particular,</span>
+<span class="sd">    :math:`cos(t)` is transformed to a sum of two complex exponentials with half</span>
+<span class="sd">    amplitude</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        cos(t) = \\frac{1}{2} e^{i t} + \\frac{1}{2} e^{- i t}</span>
+
+<span class="sd">    :param z: signal as a time series of real values</span>
+<span class="sd">    :type z: numpy.ndarray</span>
+<span class="sd">    :return: array of Fourier coefficients (complex numbers)</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+
+<span class="sd">    .. highlight:: python</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        &gt;&gt;&gt; t = numpy.linspace(0, 10, 10000)</span>
+<span class="sd">        &gt;&gt;&gt; z = numpy.cos(2 * numpy.pi * t)</span>
+<span class="sd">        &gt;&gt;&gt; z_sp = qsa.analysis.spectralize(z)</span>
+<span class="sd">        &gt;&gt;&gt; numpy.max(numpy.abs(z_sp))</span>
+<span class="sd">        0.5000241787423103</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="unspectralize"><a class="viewcode-back" href="../../qsa.html#qsa.analysis.unspectralize">[docs]</a><span class="k">def</span> <span class="nf">unspectralize</span><span class="p">(</span><span class="n">z_sp</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute inverse of a Fourier transform obtained with :py:func:`spectralize`.</span>
+<span class="sd">    By definition, unspectralize(spectralize(z)) equals z.</span>
+
+<span class="sd">    :param z_sp: a Fourier transform obtained with :py:func:`spectralize`</span>
+<span class="sd">    :type z_sp: numpy.ndarray</span>
+<span class="sd">    :return: a real signal for which Fourier transform is z_sp</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+
+<span class="sd">    .. highlight:: python</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        &gt;&gt;&gt; t = numpy.linspace(0, 10, 10000)</span>
+<span class="sd">        &gt;&gt;&gt; z = numpy.cos(2 * numpy.pi * t)</span>
+<span class="sd">        &gt;&gt;&gt; z_sp = qsa.analysis.spectralize(z)</span>
+<span class="sd">        &gt;&gt;&gt; z_sp_inv = qsa.analysis.unspectralize(z_sp)</span>
+<span class="sd">        &gt;&gt;&gt; numpy.max(z - z_sp_inv)</span>
+<span class="sd">        7.771561172376096e-16</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">z_sp_pure</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">z_sp</span><span class="p">)</span>
+    <span class="n">z_sp_pure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">z_sp_pure</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_sp</span><span class="p">)</span> <span class="o">+</span> <span class="n">z_sp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">QSA</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, OpenQSA.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
